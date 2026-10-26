@@ -1,0 +1,525 @@
+{
+  "title": "FOOD MENU",
+  "subtitle": "El-Paraiso Garden · Bar & Restaurant",
+  "footer": {
+    "name": "ELPA GARDENS",
+    "address": "Opp Gudka Total Petrol Station, Mashauri, Kisii",
+    "phones": [
+      "0704 814 482",
+      "0778 694 603"
+    ]
+  },
+  "sections": [
+    {
+      "id": "s0",
+      "title": "Main Course",
+      "images": [
+        "images/s0-1.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Ugali White",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Ugali White Special",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Ugali Brown",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Mboga Kienyeji",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Sukuma / Cabbage",
+              "price": "Ksh 50"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "Kuku Kienyeji",
+      "images": [
+        "images/s1-1.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Kuku ¼",
+              "price": "Ksh 450 / 500"
+            },
+            {
+              "name": "Kuku ½",
+              "price": "Ksh 800 / 1000"
+            },
+            {
+              "name": "Kuku Full",
+              "price": "Ksh 1700 / 2000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Mbuzi",
+      "images": [
+        "images/s2-1.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Mbuzi 1 kg",
+              "price": "Ksh 1300"
+            },
+            {
+              "name": "Mbuzi ½",
+              "price": "Ksh 650"
+            },
+            {
+              "name": "Mbuzi ¼",
+              "price": "Ksh 350"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Matumbo",
+      "images": [
+        "images/s3-1.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Matumbo 1 kg",
+              "price": "Ksh 1300"
+            },
+            {
+              "name": "Matumbo ½",
+              "price": "Ksh 650"
+            },
+            {
+              "name": "Matumbo ¼",
+              "price": "Ksh 350"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "Choma Zone",
+      "images": [
+        "images/s4-1.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Nyama Choma 1 kg",
+              "price": "Ksh 1300"
+            },
+            {
+              "name": "Nyama Choma ½",
+              "price": "Ksh 650"
+            },
+            {
+              "name": "Kuku Choma Full",
+              "price": "Ksh 1700 / 1300"
+            },
+            {
+              "name": "Kuku Choma ½",
+              "price": "Ksh 800 / 1000"
+            },
+            {
+              "name": "Matumbo Choma 1 kg",
+              "price": "Ksh 1300"
+            },
+            {
+              "name": "Matumbo Choma ½",
+              "price": "Ksh 650"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "Other Dishes",
+      "images": [
+        "images/s5-1.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Fish",
+              "price": "Ksh 600"
+            },
+            {
+              "name": "Beans",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Rice",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Githeri",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Creamed Kienyeji",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Scrambled Eggs",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Minji",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Creamed Sukuma",
+              "price": "Ksh 100"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s6",
+      "title": "Snacks",
+      "images": [
+        "images/s6-1.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Samosa (pair)",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Samosa Special",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Sausage (pair)",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Sausage Special",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Chapati",
+              "price": "Ksh 50"
+            },
+            {
+              "name": "Chips",
+              "price": "Ksh 230"
+            },
+            {
+              "name": "Boiled Eggs",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Spanish Omelette",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Normal Omelette",
+              "price": "Ksh 120"
+            },
+            {
+              "name": "Chapati Rolex",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Andazi",
+              "price": "Ksh 40"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s7",
+      "title": "Beverages",
+      "images": [
+        "images/s7-1.jpg",
+        "images/s7-2.jpg",
+        "images/s7-3.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Lemon Tea",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Black Coffee Cup",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Black Coffee Pot",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Black Coffee Flask",
+              "price": "Ksh 300"
+            },
+            {
+              "name": "Lemon Coffee Cup",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Lemon Coffee Pot",
+              "price": "Ksh 200"
+            },
+            {
+              "name": "Black Chocolate Cup",
+              "price": "Ksh 70"
+            },
+            {
+              "name": "Black Chocolate Pot",
+              "price": "Ksh 200"
+            },
+            {
+              "name": "Tea Cup",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Tea Pot",
+              "price": "Ksh 200"
+            },
+            {
+              "name": "Special Tea Cup",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Special Tea Flask",
+              "price": "Ksh 300"
+            },
+            {
+              "name": "Tea Masala Cup",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Tea Masala Flask",
+              "price": "Ksh 800"
+            },
+            {
+              "name": "White Coffee Cup",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "White Coffee Pot",
+              "price": "Ksh 200"
+            },
+            {
+              "name": "White Coffee Flask",
+              "price": "Ksh 350"
+            },
+            {
+              "name": "White Chocolate Cup",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "White Chocolate Pot",
+              "price": "Ksh 200"
+            },
+            {
+              "name": "White Chocolate Flask",
+              "price": "Ksh 500"
+            },
+            {
+              "name": "Hot Milk",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Hot Water & Lemon",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Uji Cup",
+              "price": "Ksh 120"
+            },
+            {
+              "name": "Uji Flask",
+              "price": "Ksh 600"
+            },
+            {
+              "name": "Dawa",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Tea Flask Ndogo",
+              "price": "Ksh 400"
+            },
+            {
+              "name": "Tea Flask Kubwa",
+              "price": "Ksh 700"
+            },
+            {
+              "name": "Special Tea Flask Ndogo",
+              "price": "Ksh 500"
+            },
+            {
+              "name": "Tea Masala Pot",
+              "price": "Ksh 300"
+            }
+          ]
+        },
+        {
+          "title": "Soft Drinks & Juices",
+          "items": [
+            {
+              "name": "Soda 300ml",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Quencher 500ml",
+              "price": "Ksh 100"
+            },
+            {
+              "name": "Quencher 1L",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Keringet 1L",
+              "price": "Ksh 200"
+            },
+            {
+              "name": "Delmonte",
+              "price": "Ksh 400"
+            },
+            {
+              "name": "Minute Maid 400ml",
+              "price": "Ksh 120"
+            },
+            {
+              "name": "Minute Maid 1L",
+              "price": "Ksh 250"
+            },
+            {
+              "name": "Fresh Juice",
+              "price": "Ksh 200"
+            },
+            {
+              "name": "Cocktail Juice",
+              "price": "Ksh 300"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s8",
+      "title": "Chwaks",
+      "images": [
+        "images/s8-1.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Mbuzi Chwaks 1 kg",
+              "price": "Ksh 1300"
+            },
+            {
+              "name": "Mbuzi Chwaks ½",
+              "price": "Ksh 750"
+            },
+            {
+              "name": "Mbuzi Chwaks ¼",
+              "price": "Ksh 400"
+            },
+            {
+              "name": "Matumbo 1 kg",
+              "price": "Ksh 1300"
+            },
+            {
+              "name": "Matumbo ½",
+              "price": "Ksh 650"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s9",
+      "title": "Top Choice",
+      "images": [
+        "images/s9-1.jpg"
+      ],
+      "groups": [
+        {
+          "title": "",
+          "items": [
+            {
+              "name": "Chips Masala",
+              "price": "Ksh 300"
+            },
+            {
+              "name": "Chips Saute",
+              "price": "Ksh 300"
+            },
+            {
+              "name": "Ndizi",
+              "price": "Ksh 150"
+            },
+            {
+              "name": "Viazi",
+              "price": "Ksh 200"
+            },
+            {
+              "name": "Viazi Roasted",
+              "price": "Ksh 250"
+            },
+            {
+              "name": "Viazi Deep Fried",
+              "price": "Ksh 250"
+            },
+            {
+              "name": "Viazi Ndizi",
+              "price": "Ksh 300"
+            },
+            {
+              "name": "Platter Full",
+              "price": "Ksh 3200"
+            },
+            {
+              "name": "Platter Half",
+              "price": "Ksh 1800"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Menu Admin – Prices</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0c0c0c;color:#fff;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.4}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{color:#ffd84a;margin:8px 0 14px;font-size:1.5rem}
+h2{color:#ffd84a;margin:0 0 8px;font-size:1.1rem;text-transform:uppercase}
+h3{color:#bbb;margin:12px 0 4px;font-size:.9rem;text-transform:uppercase}
+.card{background:#161616;border-radius:14px;padding:14px;margin:12px 0}
+label{display:block;font-size:.85rem;color:#bbb;margin:10px 0 3px}
+input[type=password],input[type=text]{width:100%;background:#222;color:#fff;border:1px solid #333;border-radius:8px;padding:10px;font-size:1rem}
+.chk{display:flex;gap:8px;align-items:center;margin:12px 0;font-size:.9rem;color:#ddd}
+.row{display:flex;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid #2a2a2a}
+.row:last-child{border-bottom:0}
+.row .n{flex:1}
+.row input{width:140px;text-align:right;color:#ffd84a;font-weight:700}
+button{background:#ffd84a;color:#000;border:0;border-radius:8px;padding:10px 16px;font-weight:800;cursor:pointer;font-size:1rem}
+button.s{background:#333;color:#fff;padding:9px 12px;font-weight:600;font-size:.9rem}
+.bar{position:sticky;top:0;background:#0c0c0c;padding:10px 0;display:flex;gap:8px;z-index:5}
+#msg{margin:8px 0;min-height:1.3em}.ok{color:#7ddc7d}.err{color:#ff8a8a}
+small{color:#999}
+</style></head><body><main>
+<h1>Menu Admin – Update Prices</h1>
+<div id="msg"></div>
+
+<div id="login" class="card" hidden>
+  <div id="setupBox" hidden>
+    <h2 style="margin-top:0">First-time setup</h2>
+    <label>Access token (given by the owner)</label><input id="token" type="password" autocomplete="off">
+    <label>Create a password (min 6 characters)</label><input id="pw1" type="password" autocomplete="new-password">
+    <label>Repeat password</label><input id="pw2" type="password" autocomplete="new-password">
+    <label class="chk"><input type="checkbox" id="stay1" checked> Keep me logged in on this device</label>
+    <button id="setup">Save &amp; log in</button>
+  </div>
+  <div id="unlockBox" hidden>
+    <label>Password</label><input id="pw" type="password" autocomplete="current-password">
+    <label class="chk"><input type="checkbox" id="stay2" checked> Keep me logged in on this device</label>
+    <button id="go">Log in</button> <button class="s" id="reset" type="button">Reset this device</button>
+  </div>
+  <details style="margin-top:12px"><summary><small>Repository settings (filled in automatically)</small></summary>
+    <label>GitHub username / owner</label><input id="owner" type="text" autocomplete="off">
+    <label>Repository name</label><input id="repo" type="text" autocomplete="off">
+    <label>Branch</label><input id="branch" type="text" value="main" autocomplete="off">
+  </details>
+</div>
+
+<div id="editor" hidden>
+  <div class="bar"><button id="save">Save prices</button><button class="s" id="chpw">Change password</button><button class="s" id="out">Log out</button></div>
+  <div id="sections"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const h = (t, p, ...k) => { const e = Object.assign(document.createElement(t), p || {}); e.append(...k); return e; };
+let cfg, sha, menu, dirty = false;
+
+const say = (t, c) => { $('msg').textContent = t || ''; $('msg').className = c || ''; };
+const apiUrl = (o, r) => `https://api.github.com/repos/${o}/${r}/contents/menu.json`;
+const hdr = t => ({ Authorization: 'Bearer ' + t, Accept: 'application/vnd.github+json' });
+
+// ---- Repository settings: remembered, or guessed from the github.io address ----
+const S = JSON.parse(localStorage.getItem('menuAdmin') || '{}');
+const host = location.hostname, gh = host.endsWith('.github.io');
+const seg = location.pathname.split('/')[1] || '';
+$('owner').value = S.owner || (gh ? host.split('.')[0] : '');
+$('repo').value = S.repo || (gh ? (seg && !seg.endsWith('.html') ? seg : host) : '');
+if (S.branch) $('branch').value = S.branch;
+
+// ---- Token encrypted with the password (AES-GCM, key from PBKDF2) ----
+const enc = new TextEncoder(), dec = new TextDecoder();
+const b64 = a => btoa(String.fromCharCode(...new Uint8Array(a)));
+const unb64 = x => Uint8Array.from(atob(x), c => c.charCodeAt(0));
+async function mkKey(pw, salt) {
+  const m = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' }, m, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+async function lock(token, pw) {
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await mkKey(pw, salt), enc.encode(token));
+  return JSON.stringify({ s: b64(salt), i: b64(iv), c: b64(ct) });
+}
+async function unlock(blob, pw) {
+  const o = JSON.parse(blob);
+  return dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(o.i) }, await mkKey(pw, unb64(o.s)), unb64(o.c)));
+}
+const vault = () => localStorage.getItem('menuVault');
+
+// ---- Connect to GitHub and load menu.json ----
+async function connect(t, silent) {
+  const o = $('owner').value.trim(), r = $('repo').value.trim(), b = $('branch').value.trim() || 'main';
+  if (!o || !r) { showLogin(); say('Open "Repository settings" and fill in the owner and repository.', 'err'); return false; }
+  say('Connecting…');
+  try {
+    const res = await fetch(apiUrl(o, r) + '?ref=' + encodeURIComponent(b), { headers: hdr(t), cache: 'no-store' });
+    if (res.status === 401 || res.status === 403) throw new Error('Token rejected or expired. Use "Reset this device" and enter a new token.');
+    if (res.status === 404) throw new Error('menu.json not found. Check the repository settings and that the token covers this repository.');
+    if (!res.ok) throw new Error('GitHub error ' + res.status);
+    const d = await res.json();
+    sha = d.sha;
+    menu = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(d.content.replace(/\s/g, '')), c => c.charCodeAt(0))));
+    cfg = { o, r, b, t };
+    localStorage.setItem('menuAdmin', JSON.stringify({ owner: o, repo: r, branch: b }));
+    $('login').hidden = true; $('editor').hidden = false; say('');
+    draw();
+    return true;
+  } catch (e) {
+    if (silent) { localStorage.removeItem('menuAuto'); showLogin(); }
+    say(e.message, 'err'); return false;
+  }
+}
+
+function showLogin() { $('login').hidden = false; $('setupBox').hidden = !!vault(); $('unlockBox').hidden = !vault(); }
+
+// ---- Editor: prices only ----
+function draw() {
+  const box = $('sections'); box.textContent = '';
+  menu.sections.forEach(s => {
+    const c = h('div', { className: 'card' }, h('h2', { textContent: s.title }));
+    (s.groups || []).forEach(g => {
+      if (g.title) c.append(h('h3', { textContent: g.title }));
+      g.items.forEach(it => c.append(h('div', { className: 'row' },
+        h('div', { className: 'n', textContent: it.name }),
+        h('input', { type: 'text', value: it.price, inputMode: 'text', oninput: e => { it.price = e.target.value; dirty = true; } }))));
+    });
+    box.append(c);
+  });
+}
+
+async function save() {
+  const bytes = new TextEncoder().encode(JSON.stringify(menu, null, 2) + '\n');
+  let bin = ''; bytes.forEach(x => bin += String.fromCharCode(x));
+  say('Saving…');
+  try {
+    const res = await fetch(apiUrl(cfg.o, cfg.r), { method: 'PUT', headers: hdr(cfg.t),
+      body: JSON.stringify({ message: 'Update prices via admin page', content: btoa(bin), sha, branch: cfg.b }) });
+    if (res.status === 409 || res.status === 422) throw new Error('The menu was changed elsewhere. Reload this page and try again.');
+    if (res.status === 401 || res.status === 403) throw new Error('Token expired or lacks permission (needs Contents: Read and write).');
+    if (!res.ok) throw new Error('GitHub error ' + res.status);
+    sha = (await res.json()).content.sha; dirty = false;
+    say('Saved. The live menu updates in about a minute.', 'ok');
+  } catch (e) { say(e.message, 'err'); }
+}
+
+// ---- Login actions ----
+async function setup() {
+  const t = $('token').value.trim(), p1 = $('pw1').value, p2 = $('pw2').value;
+  if (!t) return say('Enter the access token.', 'err');
+  if (p1.length < 6) return say('Password must be at least 6 characters.', 'err');
+  if (p1 !== p2) return say('Passwords do not match.', 'err');
+  if (await connect(t)) {
+    localStorage.setItem('menuVault', await lock(t, p1));
+    if ($('stay1').checked) localStorage.setItem('menuAuto', t);
+    say('Setup complete.', 'ok');
+  }
+}
+async function login() {
+  let t;
+  try { t = await unlock(vault(), $('pw').value); } catch (e) { return say('Wrong password.', 'err'); }
+  if (await connect(t) && $('stay2').checked) localStorage.setItem('menuAuto', t);
+}
+
+$('setup').onclick = setup;
+$('go').onclick = login;
+$('pw').onkeydown = e => { if (e.key === 'Enter') login(); };
+$('save').onclick = save;
+$('out').onclick = () => { localStorage.removeItem('menuAuto'); location.reload(); };
+$('reset').onclick = () => { if (confirm('This removes the saved login from this device. You will need the access token again. Continue?')) { localStorage.removeItem('menuVault'); localStorage.removeItem('menuAuto'); location.reload(); } };
+$('chpw').onclick = async () => { const p = prompt('New password (min 6 characters):'); if (!p || p.length < 6) return say('Password not changed.', 'err'); localStorage.setItem('menuVault', await lock(cfg.t, p)); say('Password changed.', 'ok'); };
+addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+// ---- Start: automatic login if this device is remembered ----
+const auto = localStorage.getItem('menuAuto');
+if (auto) connect(auto, true); else showLogin();
+</script></main></body></html>
